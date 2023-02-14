@@ -1,17 +1,17 @@
-
 """Python file to serve as the frontend"""
 import streamlit as st
 from streamlit_chat import message
 import faiss
 from langchain import OpenAI
-from langchain.chains import VectorDBQAWithSourcesChain
 from langchain.agents import Tool
 from langchain.chains.conversation.memory import ConversationBufferMemory
 from langchain import OpenAI
 from langchain.agents import initialize_agent
-
 from gpt_index import GPTSimpleVectorIndex
-import pickle
+import os
+import openai
+ 
+openai.api_key = os.environ["OPENAI_API_KEY"]
 
 # Load the LangChain.
 index = GPTSimpleVectorIndex.load_from_disk('SVindex-BMJ.json')
