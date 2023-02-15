@@ -27,7 +27,7 @@ if 'past' not in st.session_state:
 
 
 def get_text():
-    input_text = st.text_input("Chat function is a work in progress. Do not ask follow up questions. Frame your questions in full below: ", key="input")
+    input_text = st.text_input("Chatting is not possible right now. Do not ask follow up questions. Frame your questions in full below: ", key="input")
     return input_text 
 
 user_input = get_text()
