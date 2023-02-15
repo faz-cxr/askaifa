@@ -17,7 +17,7 @@ st.set_page_config(
     page_icon=":robot:"
 )
 
-st.header("Ask Aifa about anything medical")
+st.header("Ask about anything medical")
 
 if 'generated' not in st.session_state:
     st.session_state['generated'] = []
