@@ -34,7 +34,7 @@ user_input = get_text()
 index = GPTSimpleVectorIndex.load_from_disk('SVindex-BMJ.json')
 
 if user_input:
-    response = index.query(user_input, response_mode="compact")
+    response = index.query(user_input, response_mode="tree_summarize")
     output = str(response)
     st.session_state.past.append(user_input)
     st.session_state.generated.append(output)
