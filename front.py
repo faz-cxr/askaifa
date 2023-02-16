@@ -1,46 +1,35 @@
-"""Python file to serve as the frontend"""
-import os
+# Importing required packages
 import streamlit as st
 import openai
+import os
 
 from gpt_index import GPTSimpleVectorIndex
-from pathlib import Path
-from gpt_index import download_loader
-from streamlit_chat import message
 
-openai.api_key = os.environ["OPENAI_API_KEY"]
+st.title("Ask Aifa 🧠")
+st.sidebar.header("Instructions")
+st.sidebar.info(
+    '''Aifa is a web app that offers medical information to patients in natural language. 
+        It has been trained on a large corpus of text and can provide quick and accurate answers to medical queries. 
+        Simply type your question in the text box and hit enter to get a response. 
+        \n\nIt should not be used as a substitute for professional medical advice.
+       '''
+    )
+# Set the model engine and your OpenAI API key
+model_engine = "text-davinci-003"
+os.environ["OPENAI_API_KEY"] = "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"
 
-history_input = []
+def main():
+    '''
+    This function gets the user input, pass it to GPT index function and 
+    displays the response
+    '''
+    # Load index
+    #index = GPTSimpleVectorIndex.load_from_disk('SVindex-BMJ.json')
+    # Get user input
+    user_query = st.text_input("Enter query here, to exit enter :q", "How does Aspirin work?")
+    if user_query != ":q" or user_query != "":
+        # Pass the query to the GPT index function
+        response = index.query(user_query, response_mode="tree_summarize")
+        return st.write(f"{user_query}  \n\n {response}")
 
-st.set_page_config(
-    page_title="Ask Aifa",
-    page_icon=":robot:"
-)
-
-st.header("Ask about anything medical")
-
-if 'generated' not in st.session_state:
-    st.session_state['generated'] = []
-
-if 'past' not in st.session_state:
-    st.session_state['past'] = []
-
-
-def get_text():
-    input_text = st.text_input("Chatting is not possible right now. Do not ask follow up questions. Frame your questions in full below: ", key="input")
-    return input_text 
-
-user_input = get_text()
-index = GPTSimpleVectorIndex.load_from_disk('SVindex-BMJ.json')
-
-if user_input:
-    response = index.query(user_input, response_mode="tree_summarize")
-    output = str(response)
-    st.session_state.past.append(user_input)
-    st.session_state.generated.append(output)
-
-if st.session_state['generated']:
-
-    for i in range(len(st.session_state['generated'])-1, -1, -1):
-        message(st.session_state["generated"][i], key=str(i))
-        message(st.session_state['past'][i], is_user=True, key=str(i) + '_user')
+main()
