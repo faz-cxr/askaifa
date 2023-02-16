@@ -11,7 +11,7 @@ st.sidebar.info(
     '''Aifa is a web app that offers medical information to patients in natural language. 
         It has been trained on a large corpus of text and can provide quick and accurate answers to medical queries. 
         Simply type your question in the text box and hit enter to get a response. 
-        \n\nIt should not be used as a substitute for professional medical advice.
+        \n\nDo not use Aifa as a substitute for professional medical advice.
        '''
     )
 # Set the model engine and your OpenAI API key
