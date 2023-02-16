@@ -1,5 +1,6 @@
 import streamlit as st
 import os
+import openai
 from datetime import datetime
 from streamlit.components.v1 import html
 from gpt_index import GPTSimpleVectorIndex
