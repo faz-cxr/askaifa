@@ -16,7 +16,7 @@ st.sidebar.info(
     )
 # Set the model engine and your OpenAI API key
 model_engine = "text-davinci-003"
-os.environ["OPENAI_API_KEY"] = "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"
+openai.api_key = os.environ["OPENAI_API_KEY"]
 
 def main():
     '''
