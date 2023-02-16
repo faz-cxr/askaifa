@@ -24,7 +24,7 @@ def main():
     displays the response
     '''
     # Load index
-    #index = GPTSimpleVectorIndex.load_from_disk('SVindex-BMJ.json')
+    index = GPTSimpleVectorIndex.load_from_disk('SVindex-BMJ.json')
     # Get user input
     user_query = st.text_input("Enter query here, to exit enter :q", "How does Aspirin work?")
     if user_query != ":q" or user_query != "":
