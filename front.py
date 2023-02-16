@@ -27,7 +27,7 @@ def main():
     # Load index
     index = GPTSimpleVectorIndex.load_from_disk('SVindex-BMJ.json')
     # Get user input
-    user_query = st.text_input("Enter query here, to exit enter :q", "How does Aspirin work?")
+    user_query = st.text_input("Enter query here, to exit enter :q", "Explain the differences between cold and flu?")
     if user_query != ":q" or user_query != "":
         # Pass the query to the GPT index function
         response = index.query(user_query, response_mode="tree_summarize")
