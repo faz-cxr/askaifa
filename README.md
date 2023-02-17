@@ -35,8 +35,8 @@ python qa.py "What are some home remedies for cough"
 
 You can switch out `What are some home remedies for cough` for any question of your liking!
 
-This exposes a chat interface for interacting with aifa.
-IMO, this is a more natural and convenient interface for getting information.
+~~This exposes a chat interface for interacting with aifa.
+IMO, this is a more natural and convenient interface for getting information.~~
 
 ## 🚀 Code to deploy on StreamLit
 
