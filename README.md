@@ -20,7 +20,11 @@ export OPENAI_API_KEY=....
 
 # 📄 What is in here?
 - Code to deploy on StreamLit
-- Instructions for ingesting your own dataset
+
+# 🚧 Coming soon..
+- Aifa starts chatting!
+- Aifa grows a personality!
+- Aifa remembers you!
 
 ## 💬 Ask a question
 In order to ask a question, run a command like:
@@ -31,10 +35,14 @@ python qa.py "What are some home remedies for cough"
 
 You can switch out `What are some home remedies for cough` for any question of your liking!
 
-This exposes a chat interface for interacting with aifa.
-IMO, this is a more natural and convenient interface for getting information.
+~~This exposes a chat interface for interacting with aifa.
+IMO, this is a more natural and convenient interface for getting information.~~
 
 ## 🚀 Code to deploy on StreamLit
 
-The code to run the StreamLit app is in `main.py`. 
+The code to run the StreamLit app is in `front.py`. 
 Note that when setting up your StreamLit app you should make sure to add `OPENAI_API_KEY` as a secret environment variable.
+
+```shell
+streamlit run front.py
+```
