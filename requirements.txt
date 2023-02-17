@@ -3,5 +3,5 @@ faiss-cpu
 streamlit
 streamlit-chat
 gpt-index
-langchain==0.0.81
+langchain
 tiktoken
