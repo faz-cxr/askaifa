@@ -42,3 +42,7 @@ IMO, this is a more natural and convenient interface for getting information.~~
 
 The code to run the StreamLit app is in `front.py`. 
 Note that when setting up your StreamLit app you should make sure to add `OPENAI_API_KEY` as a secret environment variable.
+
+```shell
+streamlit run front.py
+```
