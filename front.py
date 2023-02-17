@@ -1,46 +1,137 @@
-"""Python file to serve as the frontend"""
-import os
 import streamlit as st
+import os
 import openai
-
+from datetime import datetime
+from streamlit.components.v1 import html
 from gpt_index import GPTSimpleVectorIndex
-from pathlib import Path
-from gpt_index import download_loader
-from streamlit_chat import message
+import pandas as pd
+import csv
+st.set_page_config(page_title="Ask Aifa 🧠")
 
-openai.api_key = os.environ["OPENAI_API_KEY"]
+html_temp = """
+                <div style="background-color:{};padding:1px">
+                
+                </div>
+                """
 
-history_input = []
+with st.sidebar:
+    st.markdown("""
+    # About 
+    \n*Aifa* is a web app that answers medical queries in **natural language**.
+    \n\n**Do not** use *Aifa* as a substitute for professional medical advice.
+    \n\n\nComing Soon: Chat with *Aifa!*
+    """)
+    st.markdown(html_temp.format("rgba(55, 53, 47, 0.64)"),unsafe_allow_html=True)
+    st.markdown("""
+    # How does it work
+    \n*Aifa* has been trained on a large corpus of medical text and can provide quick and accurate responses. 
+    \nSimply type your question in the text box and hit enter to get a response. 
+    You can also download the output as txt.
+    """)
+    st.markdown(html_temp.format("rgba(55, 53, 47, 0.64)"),unsafe_allow_html=True)
+    st.markdown("""
+    <a href = "mailto:abc@example.com?subject = Feedback&body = Message">Send Feedback</a>
+    """,
+    unsafe_allow_html=True,
+    )
 
-st.set_page_config(
-    page_title="Ask Aifa",
-    page_icon=":robot:"
+
+input_text = None
+if 'output' not in st.session_state:
+    st.session_state['output'] = 0
+
+if st.session_state['output'] <=5:
+    st.markdown("""
+    # Ask Aifa 🧠
+    """)
+    input_text = st.text_input("Start typing below and press enter ⏎", disabled=False, placeholder="What's the difference between cold and flu?")
+    st.session_state['output'] = st.session_state['output'] + 1
+else:
+    # input_text = st.text_input("Brainstorm ideas for", disabled=True)
+    st.info("Thank you! Refresh to ask more")
+    st.markdown('''
+    <a target="_blank" style="color: black" href="https://twitter.com/intent/tweet?text=I%20just%20used%20the%20Ask%20Aifa%20App%0A%0Ahttps://askaifa.streamlit.app/">
+        <button class="btn">
+            Tweet about this!
+        </button>
+    </a>
+    <style>
+    .btn{
+        display: inline-flex;
+        -moz-box-align: center;
+        align-items: center;
+        -moz-box-pack: center;
+        justify-content: center;
+        font-weight: 400;
+        padding: 0.25rem 0.75rem;
+        border-radius: 0.25rem;
+        margin: 0px;
+        line-height: 1.6;
+        color: #fff;
+        background-color: #00acee;
+        width: auto;
+        user-select: none;
+        border: 1px solid #00acee;
+        }
+    .btn:hover{
+        color: #00acee;
+        background-color: #fff;
+    }
+    </style>
+    ''',
+    unsafe_allow_html=True
+    )
+
+hide="""
+<style>
+footer{
+	visibility: hidden;
+    position: relative;
+}
+.viewerBadge_container__1QSob{
+    visibility: hidden;
+}
+#MainMenu{
+	visibility: hidden;
+}
+<style>
+"""
+st.markdown(hide, unsafe_allow_html=True)
+
+st.markdown(
+    """
+    <style>
+        iframe[width="220"] {
+            position: fixed;
+            bottom: 60px;
+            right: 40px;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True,
 )
-
-st.header("Ask about anything medical")
-
-if 'generated' not in st.session_state:
-    st.session_state['generated'] = []
-
-if 'past' not in st.session_state:
-    st.session_state['past'] = []
-
-
-def get_text():
-    input_text = st.text_input("Chatting is not possible right now. Do not ask follow up questions. Frame your questions in full below: ", key="input")
-    return input_text 
-
-user_input = get_text()
-index = GPTSimpleVectorIndex.load_from_disk('SVindex-BMJ.json')
-
-if user_input:
-    response = index.query(user_input, response_mode="tree_summarize")
-    output = str(response)
-    st.session_state.past.append(user_input)
-    st.session_state.generated.append(output)
-
-if st.session_state['generated']:
-
-    for i in range(len(st.session_state['generated'])-1, -1, -1):
-        message(st.session_state["generated"][i], key=str(i))
-        message(st.session_state['past'][i], is_user=True, key=str(i) + '_user')
+if input_text:
+    prompt = str(input_text)
+    if prompt:
+        openai.api_key = os.environ["OPENAI_API_KEY"]
+        index = GPTSimpleVectorIndex.load_from_disk('SVindex-BMJ.json')
+        response = index.query(prompt, response_mode="tree_summarize")
+        query_output = response
+        today = datetime.today().strftime('%Y-%m-%d')
+        topic = input_text+"\n@Date: "+str(today)+"\n"+str(query_output)
+        
+        st.info(query_output)
+        filename = "answers_"+str(today)+".txt"
+        btn = st.download_button(
+            label="Download txt",
+            data=topic,
+            file_name=filename
+        )
+        fields = [input_text, query_output, str(today)]
+        # read local csv file
+        r = pd.read_csv('./data/prompts.csv')
+        if len(fields)!=0:
+            with open('./data/prompts.csv', 'a', encoding='utf-8', newline='') as f:
+                # write to csv file (append mode)
+                writer = csv.writer(f, delimiter=',', lineterminator='\n')
+                writer.writerow(fields)
