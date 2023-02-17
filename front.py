@@ -44,7 +44,7 @@ if st.session_state['output'] <=5:
     st.markdown("""
     # Ask Aifa 🧠
     """)
-    input_text = st.text_input("Start typing below and click enter ⏎", disabled=False, placeholder="What's the difference between cold and flu?")
+    input_text = st.text_input("Start typing below and click enter ⏎", disabled=False, placeholder="Example: What's the difference between cold and flu?")
     st.session_state['output'] = st.session_state['output'] + 1
 else:
     # input_text = st.text_input("Brainstorm ideas for", disabled=True)
